@@ -764,7 +764,12 @@ RCT_EXPORT_METHOD(getPhotoByInternalID:(NSString *)internalId
 
           if (imageURL.absoluteString.length != 0) {
 
-            filePath = [imageURL.absoluteString stringByReplacingOccurrencesOfString:@"pathfile:" withString:@"file:"];
+          NSURLComponents *components = [NSURLComponents componentsWithURL:imageURL resolvingAgainstBaseURL:NO];
+          components.fragment = nil;
+
+          NSURL *sanitizedURL = components.URL;
+        
+          NSString *filePath = [sanitizedURL.absoluteString stringByReplacingOccurrencesOfString:@"pathfile:" withString:@"file:"];
 
             resolve(@{
                       @"node": @{
